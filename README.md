@@ -28,7 +28,7 @@ Or, if/when published to crates.io, replace the path dependency with a version.
 Generate a keypair, sign, verify:
 
 ```rust
-use uov::{KeyPair, Scheme};
+use uov_rs::{KeyPair, Scheme};
 
 fn main() {
     let kp = KeyPair::generate(Scheme::IpPkcSkc);
@@ -42,7 +42,7 @@ fn main() {
 Round-trip keys/signatures as bytes:
 
 ```rust
-use uov::{KeyPair, Scheme, SigningKey, Signature, VerifyingKey};
+use uov_rs::{KeyPair, Scheme, SigningKey, Signature, VerifyingKey};
 
 fn main() {
     let scheme = Scheme::IpPkcSkc;
@@ -79,7 +79,31 @@ Where the suffixes mean:
 - **`Pkc`**: compressed public key
 - **`PkcSkc`**: compressed public + secret key
 
-If you want to iterate through all variants, see `uov::uov_all()` (lower-level API; used by the KAT tests).
+If you want to iterate through all variants, see `uov_rs::uov_all()` (lower-level API; used by the KAT tests).
+
+## Sizes (keys and signatures)
+
+All sizes below are **bytes** as produced/consumed by `as_bytes()` / `from_bytes()` and `Signature::as_bytes()`.
+
+| Scheme | Public key (pk) | Secret key (sk) | Signature (sig) |
+| --- | ---:| ---:| ---:|
+| `Ip` | 278,432 | 237,896 | 128 |
+| `IpPkc` | 43,576 | 237,896 | 128 |
+| `IpPkcSkc` | 43,576 | 32 | 128 |
+| `Is` | 412,160 | 348,704 | 96 |
+| `IsPkc` | 66,576 | 348,704 | 96 |
+| `IsPkcSkc` | 66,576 | 32 | 96 |
+| `III` | 1,225,440 | 1,044,320 | 200 |
+| `IIIPkc` | 189,232 | 1,044,320 | 200 |
+| `IIIPkcSkc` | 189,232 | 32 | 200 |
+| `V` | 2,869,440 | 2,436,704 | 260 |
+| `VPkc` | 446,992 | 2,436,704 | 260 |
+| `VPkcSkc` | 446,992 | 32 | 260 |
+
+Notes:
+
+- **`Pkc`** drastically reduces public-key size by storing a seed plus the \(P_3\) part of the public map.
+- **`PkcSkc`** stores only a **32-byte** secret seed and expands the full secret key on demand.
 
 ## Public API overview
 
