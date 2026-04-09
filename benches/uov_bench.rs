@@ -1,5 +1,5 @@
 use criterion::{criterion_group, criterion_main, Criterion};
-use uov::{KeyPair, Scheme};
+use uov_rs::{KeyPair, Scheme};
 
 fn bench_scheme(c: &mut Criterion, scheme: Scheme, name: &str) {
     c.bench_function(&format!("{}/keygen", name), |b| {

@@ -1,7 +1,7 @@
 use aes::Aes256;
 use cipher::{BlockEncrypt, KeyInit};
 use sha2::{Digest, Sha256};
-use uov::uov_all;
+use uov_rs::uov_all;
 
 /// NIST KAT DRBG (AES-256 CTR mode) - matches the Python NIST_KAT_DRBG class.
 struct NistKatDrbg {
@@ -59,7 +59,7 @@ impl NistKatDrbg {
     }
 }
 
-fn test_rsp(iut: &uov::Uov, katnum: usize) -> String {
+fn test_rsp(iut: &uov_rs::Uov, katnum: usize) -> String {
     let seed: Vec<u8> = (0..48).map(|i| i as u8).collect();
     let mut drbg = NistKatDrbg::new(&seed);
     let mut kat = format!("# {}\n\n", iut.params.katname);
