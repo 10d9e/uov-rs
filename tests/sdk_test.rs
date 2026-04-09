@@ -1,4 +1,4 @@
-use uov::{KeyPair, Scheme, SigningKey, Signature, VerifyingKey};
+use uov::{KeyPair, Scheme, Signature, SigningKey, VerifyingKey};
 
 #[test]
 fn sign_and_verify() {
@@ -31,10 +31,18 @@ fn roundtrip_signature_bytes() {
 #[test]
 fn all_schemes_sign_verify() {
     let schemes = [
-        Scheme::Ip, Scheme::IpPkc, Scheme::IpPkcSkc,
-        Scheme::Is, Scheme::IsPkc, Scheme::IsPkcSkc,
-        Scheme::III, Scheme::IIIPkc, Scheme::IIIPkcSkc,
-        Scheme::V, Scheme::VPkc, Scheme::VPkcSkc,
+        Scheme::Ip,
+        Scheme::IpPkc,
+        Scheme::IpPkcSkc,
+        Scheme::Is,
+        Scheme::IsPkc,
+        Scheme::IsPkcSkc,
+        Scheme::III,
+        Scheme::IIIPkc,
+        Scheme::IIIPkcSkc,
+        Scheme::V,
+        Scheme::VPkc,
+        Scheme::VPkcSkc,
     ];
     for scheme in schemes {
         let kp = KeyPair::generate(scheme);

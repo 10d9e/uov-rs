@@ -2,6 +2,12 @@
 name = "uov"
 version = "0.1.0"
 edition = "2021"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+description = "UOV (Unbalanced Oil and Vinegar) signature scheme with a small Rust SDK"
+keywords = ["cryptography", "signature", "post-quantum"]
+categories = ["cryptography"]
+exclude = ["target/**"]
 
 [dependencies]
 aes = "0.8"

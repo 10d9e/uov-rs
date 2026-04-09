@@ -17,7 +17,11 @@ impl NistKatDrbg {
             ctr: [0u8; 16],
         };
         let update = drbg.get_bytes(48);
-        let update: Vec<u8> = update.iter().zip(seed.iter()).map(|(&a, &b)| a ^ b).collect();
+        let update: Vec<u8> = update
+            .iter()
+            .zip(seed.iter())
+            .map(|(&a, &b)| a ^ b)
+            .collect();
         drbg.key.copy_from_slice(&update[..32]);
         drbg.ctr.copy_from_slice(&update[32..]);
         drbg

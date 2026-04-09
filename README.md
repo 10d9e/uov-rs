@@ -135,5 +135,8 @@ The benchmark harness is `benches/uov_bench.rs` and produces Criterion output (i
 
 ## License
 
-No license file is currently present in this repository. If you intend this to be open-source, add a `LICENSE` file (e.g., MIT/Apache-2.0) and update this section.
+Licensed under either of:
+
+- Apache License, Version 2.0 (`LICENSE-APACHE`)
+- MIT license (`LICENSE-MIT`)
 

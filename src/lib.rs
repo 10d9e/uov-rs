@@ -147,6 +147,7 @@ fn mvec_from_bytes(b: &[u8], m_sz: usize) -> MVector {
 type TriMatrix = Vec<Vec<MVector>>;
 type RectMatrix = Vec<Vec<MVector>>;
 
+#[allow(clippy::needless_range_loop)]
 fn unpack_mtri(b: &[u8], d: usize, m_sz: usize) -> TriMatrix {
     let mut m = vec![vec![mvec_zero(m_sz); d]; d];
     let mut p = 0;
@@ -159,6 +160,7 @@ fn unpack_mtri(b: &[u8], d: usize, m_sz: usize) -> TriMatrix {
     m
 }
 
+#[allow(clippy::needless_range_loop)]
 fn pack_mtri(m: &TriMatrix, d: usize) -> Vec<u8> {
     let mut b = Vec::new();
     for i in 0..d {
@@ -169,6 +171,7 @@ fn pack_mtri(m: &TriMatrix, d: usize) -> Vec<u8> {
     b
 }
 
+#[allow(clippy::needless_range_loop)]
 fn unpack_mrect(b: &[u8], h: usize, w: usize, m_sz: usize) -> RectMatrix {
     let mut m = vec![vec![mvec_zero(m_sz); w]; h];
     let mut p = 0;
@@ -181,6 +184,7 @@ fn unpack_mrect(b: &[u8], h: usize, w: usize, m_sz: usize) -> RectMatrix {
     m
 }
 
+#[allow(clippy::needless_range_loop)]
 fn pack_mrect(m: &RectMatrix, h: usize, w: usize) -> Vec<u8> {
     let mut b = Vec::new();
     for i in 0..h {
@@ -276,16 +280,39 @@ impl UovParams {
         };
 
         let kc = if pkc {
-            if skc { "pkc-skc" } else { "pkc" }
+            if skc {
+                "pkc-skc"
+            } else {
+                "pkc"
+            }
         } else {
             "classic"
         };
         let katname = format!("OV({},{},{})-{}", gf, n, m, kc);
 
         UovParams {
-            gf, n, m, v, pkc, skc, name, katname, gf_bits,
-            v_sz, n_sz, m_sz, seed_sk_sz, seed_pk_sz, salt_sz,
-            sig_sz, so_sz, p1_sz, p2_sz, p3_sz, pk_sz, sk_sz,
+            gf,
+            n,
+            m,
+            v,
+            pkc,
+            skc,
+            name,
+            katname,
+            gf_bits,
+            v_sz,
+            n_sz,
+            m_sz,
+            seed_sk_sz,
+            seed_pk_sz,
+            salt_sz,
+            sig_sz,
+            so_sz,
+            p1_sz,
+            p2_sz,
+            p3_sz,
+            pk_sz,
+            sk_sz,
         }
     }
 }
@@ -299,6 +326,7 @@ impl Uov {
         Uov { params }
     }
 
+    #[allow(clippy::needless_range_loop)]
     fn calc_f2_p3(&self, p1: &[u8], p2: &[u8], so: &[u8]) -> (Vec<u8>, Vec<u8>) {
         let p = &self.params;
         let m_sz = p.m_sz;
@@ -346,6 +374,7 @@ impl Uov {
         (sks, p3)
     }
 
+    #[allow(clippy::needless_range_loop)]
     fn gauss_solve(&self, ll: &[MVector], c: &[u8]) -> Option<Vec<u8>> {
         let p = &self.params;
         let h = p.m;
@@ -421,7 +450,10 @@ impl Uov {
         }
         for i in 0..m {
             for j in i..m {
-                y = mvec_xor(&y, &gf_mulm(&m3[i][j], gf_mul(x[v + i], x[v + j], gf), gf, m));
+                y = mvec_xor(
+                    &y,
+                    &gf_mulm(&m3[i][j], gf_mul(x[v + i], x[v + j], gf), gf, m),
+                );
             }
         }
 
@@ -493,12 +525,8 @@ impl Uov {
         (pk, sk)
     }
 
-    pub fn sign(
-        &self,
-        msg: &[u8],
-        sk: &[u8],
-        rbg: &mut dyn FnMut(usize) -> Vec<u8>,
-    ) -> Vec<u8> {
+    #[allow(clippy::needless_range_loop)]
+    pub fn sign(&self, msg: &[u8], sk: &[u8], rbg: &mut dyn FnMut(usize) -> Vec<u8>) -> Vec<u8> {
         let p = &self.params;
         let gf = p.gf;
 
@@ -622,7 +650,14 @@ pub fn uov_1s_pkc_skc() -> Uov {
     Uov::new(UovParams::new(16, 160, 64, true, true, "uov-Is-pkc+skc"))
 }
 pub fn uov_3() -> Uov {
-    Uov::new(UovParams::new(256, 184, 72, false, false, "uov-III-classic"))
+    Uov::new(UovParams::new(
+        256,
+        184,
+        72,
+        false,
+        false,
+        "uov-III-classic",
+    ))
 }
 pub fn uov_3_pkc() -> Uov {
     Uov::new(UovParams::new(256, 184, 72, true, false, "uov-III-pkc"))
@@ -642,10 +677,18 @@ pub fn uov_5_pkc_skc() -> Uov {
 
 pub fn uov_all() -> Vec<Uov> {
     vec![
-        uov_1p(), uov_1p_pkc(), uov_1p_pkc_skc(),
-        uov_1s(), uov_1s_pkc(), uov_1s_pkc_skc(),
-        uov_3(), uov_3_pkc(), uov_3_pkc_skc(),
-        uov_5(), uov_5_pkc(), uov_5_pkc_skc(),
+        uov_1p(),
+        uov_1p_pkc(),
+        uov_1p_pkc_skc(),
+        uov_1s(),
+        uov_1s_pkc(),
+        uov_1s_pkc_skc(),
+        uov_3(),
+        uov_3_pkc(),
+        uov_3_pkc_skc(),
+        uov_5(),
+        uov_5_pkc(),
+        uov_5_pkc_skc(),
     ]
 }
 
@@ -737,7 +780,11 @@ impl KeyPair {
         let uov2 = scheme.to_uov();
         KeyPair {
             signing_key: SigningKey { scheme, uov, sk },
-            verifying_key: VerifyingKey { scheme, uov: uov2, pk },
+            verifying_key: VerifyingKey {
+                scheme,
+                uov: uov2,
+                pk,
+            },
         }
     }
 }
@@ -747,7 +794,11 @@ impl SigningKey {
     pub fn from_bytes(scheme: Scheme, bytes: &[u8]) -> Self {
         let uov = scheme.to_uov();
         assert_eq!(bytes.len(), uov.params.sk_sz, "invalid secret key length");
-        SigningKey { scheme, uov, sk: bytes.to_vec() }
+        SigningKey {
+            scheme,
+            uov,
+            sk: bytes.to_vec(),
+        }
     }
 
     /// Return the raw secret key bytes.
@@ -777,7 +828,11 @@ impl VerifyingKey {
     pub fn from_bytes(scheme: Scheme, bytes: &[u8]) -> Self {
         let uov = scheme.to_uov();
         assert_eq!(bytes.len(), uov.params.pk_sz, "invalid public key length");
-        VerifyingKey { scheme, uov, pk: bytes.to_vec() }
+        VerifyingKey {
+            scheme,
+            uov,
+            pk: bytes.to_vec(),
+        }
     }
 
     /// Return the raw public key bytes.
@@ -799,7 +854,9 @@ impl VerifyingKey {
 impl Signature {
     /// Construct a signature from raw bytes.
     pub fn from_bytes(bytes: &[u8]) -> Self {
-        Signature { bytes: bytes.to_vec() }
+        Signature {
+            bytes: bytes.to_vec(),
+        }
     }
 
     /// Return the raw signature bytes.
