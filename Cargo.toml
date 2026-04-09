@@ -1,5 +1,5 @@
 [package]
-name = "uov"
+name = "uov-rs"
 version = "0.1.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -9,8 +9,8 @@ keywords = ["cryptography", "signature", "post-quantum"]
 categories = ["cryptography"]
 exclude = ["target/**"]
 
-repository = "https://github.com/10d9e/uov"
-homepage = "https://github.com/10d9e/uov"
+repository = "https://github.com/10d9e/uov-rs"
+homepage = "https://github.com/10d9e/uov-rs"
 
 [dependencies]
 aes = "0.8"
