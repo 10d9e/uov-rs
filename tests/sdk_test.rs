@@ -1,4 +1,4 @@
-use uov::{KeyPair, Scheme, Signature, SigningKey, VerifyingKey};
+use uov_rs::{KeyPair, Scheme, Signature, SigningKey, VerifyingKey};
 
 #[test]
 fn sign_and_verify() {
